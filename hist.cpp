@@ -146,7 +146,11 @@ int ha_analyze_count(int n_cnt, int start_cnt, int m_peak_hom, const int64_t *cn
 	if (max3 > 0) fprintf(stderr, "[M::%s] right: count[%d] = %ld\n", __func__, max3_i, (long)cnt[max3_i]);
 	else fprintf(stderr, "[M::%s] right: none\n", __func__);
 
-	if(m_peak_hom > 0) return adj_m_peak_hom(m_peak_hom, max_i, max2_i, max3_i, peak_het);
+	if(m_peak_hom > 0) {
+		*peak_het = (m_peak_hom + 1) / 2;
+		fprintf(stderr, "[M::%s] forced by --hg-size: peak_hom: %d; peak_het: %d\n", __func__, m_peak_hom, *peak_het);
+		return m_peak_hom;
+	}
 	if (max3_i > 0) {
 		*peak_het = max_i;
 		return max3_i;
